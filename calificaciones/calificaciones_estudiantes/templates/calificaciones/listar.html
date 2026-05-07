@@ -1,0 +1,102 @@
+{% extends 'calificaciones/base.html' %}
+
+{% block title %}Listado de Calificaciones{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>📋 Listado de Calificaciones</span>
+        <a href="{% url 'crear_calificacion' %}" class="btn btn-success">
+            ➕ Nueva Calificación
+        </a>
+    </div>
+
+    {% if calificaciones %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Estudiante</th>
+                        <th>Identificación</th>
+                        <th>Asignatura</th>
+                        <th style="text-align: center;">Nota 1</th>
+                        <th style="text-align: center;">Nota 2</th>
+                        <th style="text-align: center;">Nota 3</th>
+                        <th style="text-align: center;">Promedio</th>
+                        <th style="text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for calificacion in calificaciones %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ calificacion.nombre_estudiante }}</strong></td>
+                        <td>{{ calificacion.identificacion }}</td>
+                        <td>{{ calificacion.asignatura }}</td>
+                        <td style="text-align: center;">{{ calificacion.nota1 }}</td>
+                        <td style="text-align: center;">{{ calificacion.nota2 }}</td>
+                        <td style="text-align: center;">{{ calificacion.nota3 }}</td>
+                        <td style="text-align: center;">
+                            <strong style="color: {% if calificacion.promedio >= 3.5 %}#48bb78{% elif calificacion.promedio >= 3.0 %}#ed8936{% else %}#e53e3e{% endif %};">
+                                {{ calificacion.promedio }}
+                            </strong>
+                        </td>
+                        <td style="text-align: center;">
+                            <div class="actions" style="justify-content: center;">
+                                <a href="{% url 'editar_calificacion' calificacion.pk %}" 
+                                   class="btn btn-warning" 
+                                   style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                    ✏️ Editar
+                                </a>
+                                <a href="{% url 'eliminar_calificacion' calificacion.pk %}" 
+                                   class="btn btn-danger" 
+                                   style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                    🗑️ Eliminar
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if promedio_general %}
+        <div class="stats-box">
+            <h3>📊 Promedio General de Todas las Calificaciones</h3>
+            <div class="value">{{ promedio_general|floatformat:2 }}</div>
+            <p style="margin-top: 0.5rem; opacity: 0.9;">
+                Calculado sobre {{ calificaciones|length }} registro{% if calificaciones|length != 1 %}s{% endif %}
+            </p>
+        </div>
+        {% endif %}
+
+    {% else %}
+        <div class="empty-state">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">📚</div>
+            <h3 style="color: #4a5568; margin-bottom: 1rem;">No hay calificaciones registradas</h3>
+            <p style="color: #718096; margin-bottom: 2rem;">
+                Comienza agregando la primera calificación al sistema.
+            </p>
+            <a href="{% url 'crear_calificacion' %}" class="btn btn-primary">
+                ➕ Crear Primera Calificación
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    @media print {
+        .navbar, .btn {
+            display: none;
+        }
+        body {
+            background: white;
+        }
+        .card {
+            box-shadow: none;
+        }
+    }
+</style>
+{% endblock %}

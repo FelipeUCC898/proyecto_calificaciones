@@ -1,0 +1,106 @@
+{% extends 'calificaciones/base.html' %}
+
+{% block title %}Editar Calificación{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        ✏️ Editar Calificación
+    </div>
+
+    <div class="alert alert-info">
+        <strong>Editando:</strong> {{ calificacion.nombre_estudiante }} - {{ calificacion.asignatura }}
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_nombre_estudiante">Nombre del Estudiante *</label>
+            {{ form.nombre_estudiante }}
+            {% if form.nombre_estudiante.errors %}
+                <small style="color: #e53e3e;">{{ form.nombre_estudiante.errors.0 }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_identificacion">Identificación *</label>
+            {{ form.identificacion }}
+            {% if form.identificacion.errors %}
+                <small style="color: #e53e3e;">{{ form.identificacion.errors.0 }}</small>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_asignatura">Asignatura *</label>
+            {{ form.asignatura }}
+            {% if form.asignatura.errors %}
+                <small style="color: #e53e3e;">{{ form.asignatura.errors.0 }}</small>
+            {% endif %}
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+            <div class="form-group">
+                <label for="id_nota1">Nota 1 *</label>
+                {{ form.nota1 }}
+                {% if form.nota1.errors %}
+                    <small style="color: #e53e3e;">{{ form.nota1.errors.0 }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_nota2">Nota 2 *</label>
+                {{ form.nota2 }}
+                {% if form.nota2.errors %}
+                    <small style="color: #e53e3e;">{{ form.nota2.errors.0 }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="id_nota3">Nota 3 *</label>
+                {{ form.nota3 }}
+                {% if form.nota3.errors %}
+                    <small style="color: #e53e3e;">{{ form.nota3.errors.0 }}</small>
+                {% endif %}
+            </div>
+        </div>
+
+        <div style="background: #f7fafc; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+            <strong style="color: #2d3748;">Promedio Actual:</strong>
+            <span style="color: {% if calificacion.promedio >= 3.5 %}#48bb78{% elif calificacion.promedio >= 3.0 %}#ed8936{% else %}#e53e3e{% endif %}; font-size: 1.2rem; font-weight: bold; margin-left: 0.5rem;">
+                {{ calificacion.promedio }}
+            </span>
+            <p style="color: #718096; font-size: 0.9rem; margin-top: 0.5rem;">
+                El promedio se recalculará automáticamente al guardar los cambios.
+            </p>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-success">
+                💾 Guardar Cambios
+            </button>
+            <a href="{% url 'listar_calificaciones' %}" class="btn btn-secondary">
+                ❌ Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"],
+    input[type="number"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+</style>
+{% endblock %}

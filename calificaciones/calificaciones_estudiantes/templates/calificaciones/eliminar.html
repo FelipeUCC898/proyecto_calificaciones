@@ -1,0 +1,72 @@
+{% extends 'calificaciones/base.html' %}
+
+{% block title %}Eliminar Calificación{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+    <div class="card-header" style="text-align: center; color: #e53e3e;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+        Confirmar Eliminación
+    </div>
+
+    <div class="alert alert-error">
+        <strong>¡Atención!</strong> Esta acción no se puede deshacer.
+    </div>
+
+    <div style="background: #f7fafc; padding: 1.5rem; border-radius: 5px; margin-bottom: 1.5rem;">
+        <h3 style="color: #2d3748; margin-bottom: 1rem;">Detalles del Registro a Eliminar:</h3>
+        
+        <div style="display: grid; gap: 0.75rem;">
+            <div>
+                <strong style="color: #4a5568;">Estudiante:</strong>
+                <span style="color: #2d3748; margin-left: 0.5rem;">{{ calificacion.nombre_estudiante }}</span>
+            </div>
+            
+            <div>
+                <strong style="color: #4a5568;">Identificación:</strong>
+                <span style="color: #2d3748; margin-left: 0.5rem;">{{ calificacion.identificacion }}</span>
+            </div>
+            
+            <div>
+                <strong style="color: #4a5568;">Asignatura:</strong>
+                <span style="color: #2d3748; margin-left: 0.5rem;">{{ calificacion.asignatura }}</span>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-top: 0.5rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0;">
+                <div>
+                    <strong style="color: #4a5568; font-size: 0.9rem;">Nota 1:</strong>
+                    <div style="color: #2d3748; font-size: 1.1rem;">{{ calificacion.nota1 }}</div>
+                </div>
+                <div>
+                    <strong style="color: #4a5568; font-size: 0.9rem;">Nota 2:</strong>
+                    <div style="color: #2d3748; font-size: 1.1rem;">{{ calificacion.nota2 }}</div>
+                </div>
+                <div>
+                    <strong style="color: #4a5568; font-size: 0.9rem;">Nota 3:</strong>
+                    <div style="color: #2d3748; font-size: 1.1rem;">{{ calificacion.nota3 }}</div>
+                </div>
+                <div>
+                    <strong style="color: #4a5568; font-size: 0.9rem;">Promedio:</strong>
+                    <div style="font-size: 1.1rem; font-weight: bold; color: {% if calificacion.promedio >= 3.5 %}#48bb78{% elif calificacion.promedio >= 3.0 %}#ed8936{% else %}#e53e3e{% endif %};">
+                        {{ calificacion.promedio }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="color: #4a5568; margin-bottom: 1.5rem; text-align: center;">
+        <p>¿Estás seguro de que deseas eliminar este registro?</p>
+    </div>
+
+    <form method="post" style="display: flex; gap: 1rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="flex: 1;">
+            🗑️ Sí, Eliminar
+        </button>
+        <a href="{% url 'listar_calificaciones' %}" class="btn btn-secondary" style="flex: 1; text-align: center;">
+            ❌ No, Cancelar
+        </a>
+    </form>
+</div>
+{% endblock %}
